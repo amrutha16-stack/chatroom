@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/5daae9f372.js" crossorigin="anonymous"></script>  
+    <script src="index.js"></script>
+    <title>Chat_msge</title>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+            box-sizing: border-box;
+            list-style-type: none;
+            text-decoration: none;
+            color:black;
+        }
+        body{
+            background-image: url(https://th.bing.com/th/id/OIP.vL9LGi0KsYvOdGT_lcmX7wHaN2?pid=ImgDet&rs=1);
+        }
+        nav{
+            background-color: rgb(46, 140, 234);
+            width:100%;
+            font-weight: bold;
+        }
+        nav .logo{
+            text-transform: uppercase;
+            padding:0 100px;
+            line-height: 80px;
+            font-size: 36px;
+        }
+        nav ul{
+            float:right;
+            padding-right:40px;
+        }
+        nav ul li{
+            display:inline-block;
+            line-height: 80px;
+        }
+        nav ul li a{
+            padding:0 20px;
+            font-size: 26px;
+        }
+        form{
+            display: flex;
+            position: fixed; 
+            bottom: 0;
+            width:100%;
+        }
+        form input{
+            width:100%;
+            outline: none;
+            border: none;
+            background-color: rgb(225, 228, 232);
+            padding:10px;
+            font-size: 20px;
+        }
+        form button{
+            padding: 20px;
+            text-align: center;
+            background-color: rgb(46, 140, 234);
+            border: 1px solid black;
+            width:15%;
+        }
+        form button i{
+           font-size: 20px;
+        }
+        #messages {
+             list-style-type: none; 
+             margin: 0; 
+             padding: 0; 
+        }
+        #messages > li { 
+            padding: 1rem 1rem; 
+        }
+        #messages > li:nth-child(odd) {
+            margin-block:20px;
+            margin-left: 10px;
+            background: rgb(46, 140, 234);
+            width:50%;
+            border: none;
+            border-radius: 20px;
+            box-shadow:0 0 10px rgba(59, 44, 61, 0.8);
+            float:left;
+            font-size:24px;
+        }
+        #messages > li {
+            margin-block:20px;
+            margin-right: 10px;
+            background: rgb(232, 225, 236);
+            width:50%;
+            border: none;
+            border-radius: 10px;
+            box-shadow:0 0 10px rgba(59, 44, 61, 0.8);
+            float:right;
+            font-size:24px;
+        }
+        #day{
+            background-color: transparent;
+            border:none;
+            box-shadow:0 0 2px black;
+            padding:2px;
+            font-size:medium;
+        }
+        @media (max-width: 480px){
+            nav ul{
+                display: none;
+            }
+            nav .logo{
+            text-align: center;
+            font-size: 28px;
+            width:100%;
+           }
+        } 
+        </style>
+</head>
+<body id="bg">
+    <nav>
+        <label class="logo">
+            Chatroom
+        </label>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Features</a></li>
+            <!--<input type="button" onclick = togglebar()><i class="fa-light fa-sun" style="color: #0a0a0a;" id="day"></i>-->
+        </ul>
+    </nav>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+        <input type="text" placeholder="Message" id="input">
+        <button><i class="fa-light fa-sun" style="color: #0a0a0a;"></i></button>
+    </form>
+    <!--<script>
+        function togglebar() {
+            if(bg.style.background === 'url(https://th.bing.com/th/id/OIP.vL9LGi0KsYvOdGT_lcmX7wHaN2?pid=ImgDet&rs=1)'){
+                bg.style.background = 'url(https://th.bing.com/th/id/OIP.FFfZxnm1nues2Fnm3YPSLwAAAA?pid=ImgDet&rs=1)';
+            }else{
+                bg.style.background = 'url(https://th.bing.com/th/id/OIP.vL9LGi0KsYvOdGT_lcmX7wHaN2?pid=ImgDet&rs=1)';
+            }
+        }
+        if(bg.style.background != ''){
+            bg.style.background == '';
+        }else{
+            bg.style.background == ''
+        }
+    </script>-->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const form = document.getElementById('form');
+      const input = document.getElementById('input');
+      const messages = document.getElementById('messages');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit('chat message', input.value);
+          input.value = '';
+        }
+      });
+    
+      socket.on('chat message', (msg) => {
+        const item = document.createElement('li');
+        item.textContent = msg;
+        messages.appendChild(item);
+        window.scrollTo(1, document.body.scrollHeight);
+      });
+    </script>
+</body>
+</html>
